@@ -3,6 +3,7 @@ package com.motowncrust.userservice.service;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
+import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,5 +23,11 @@ public class UserService {
     // Delete a Firebase user
     public void deleteUser(String uid) throws FirebaseAuthException {
         FirebaseAuth.getInstance().deleteUser(uid);
+    }
+
+    //Update User Details
+    public String updateUser(UserRecord.UpdateRequest request) throws FirebaseAuthException {
+        UserRecord record = FirebaseAuth.getInstance().updateUser(request);
+        return record.getUid();
     }
 }

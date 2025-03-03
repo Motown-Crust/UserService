@@ -4,6 +4,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
 import com.motowncrust.userservice.service.UserService;
+import org.apache.catalina.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,7 @@ public class UserController {
             System.out.println(userRecord);
             return ResponseEntity.ok(userRecord);
         } catch (FirebaseAuthException e) {
+            System.out.println(e);
             return ResponseEntity.status(500).build();
         }
     }
@@ -38,6 +40,17 @@ public class UserController {
             return ResponseEntity.ok(uid);
         } catch (FirebaseAuthException e) {
             return ResponseEntity.status(500).body("Error creating user: " + e.getMessage());
+        }
+    }
+
+    //Update User Details
+    @PostMapping("/update")
+    public ResponseEntity<String> updateUser(@RequestBody UserRecord.UpdateRequest request){
+        try {
+            String uid = userService.updateUser(request);
+            return ResponseEntity.ok(uid);
+        } catch (FirebaseAuthException e) {
+            throw new RuntimeException(e);
         }
     }
 
