@@ -23,12 +23,9 @@ public class FirebaseAuthenticationFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader("Authorization");
         if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
             String authToken = authHeader.substring(7);
-            System.out.println(authHeader);
+            System.out.println(authToken);
             try {
                 FirebaseToken firebaseToken = FirebaseAuth.getInstance().verifyIdToken(authToken);
-                System.out.println(firebaseToken);
-                System.out.println(firebaseToken.getUid());
-
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                         firebaseToken.getUid(), null, null);
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
