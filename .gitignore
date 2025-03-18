@@ -1,0 +1,39 @@
+# Firebase Service Account Key
+src/main/resources/firebase/serviceAccountKey.json
+
+# Log files
+*.log
+
+# Node.js dependencies
+node_modules/
+
+# Java build files
+*.class
+
+# Maven and Gradle build directories
+target/
+build/
+
+# IntelliJ IDEA project files
+.idea/
+
+# Eclipse project files
+.project
+.classpath
+
+# macOS system files
+.DS_Store
+
+# Windows system files
+Thumbs.db
+
+# Environment variable files
+.env
+
+# Python bytecode files
+__pycache__/
+
+# Gradle and Maven wrapper logs
+gradle-wrapper.jar
+mvnw
+mvnw.cmd
