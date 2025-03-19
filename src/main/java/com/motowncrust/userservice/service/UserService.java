@@ -2,8 +2,11 @@ package com.motowncrust.userservice.service;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseToken;
 import com.google.firebase.auth.UserRecord;
 import org.springframework.stereotype.Service;
+
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class UserService {
@@ -22,5 +25,14 @@ public class UserService {
     // Delete a Firebase user
     public void deleteUser(String uid) throws FirebaseAuthException {
         FirebaseAuth.getInstance().deleteUser(uid);
+    }
+
+    public UserRecord verifyFirebaseToken(String idToken) throws FirebaseAuthException {
+        // Verify the ID token
+        FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(idToken);
+        String uid = decodedToken.getUid();
+
+        // Get user record
+        return FirebaseAuth.getInstance().getUser(uid);
     }
 }
