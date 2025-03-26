@@ -2,12 +2,15 @@ package com.motowncrust.userservice.controller;
 
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
+import com.motowncrust.userservice.model.PhoneNumberObject;
 import com.motowncrust.userservice.service.AdminService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -50,6 +53,23 @@ public class AdminUserController {
         } catch (InterruptedException e) {
             logger.error("Request interrupted while fetching user analytics for UID: {}", uid, e);
             Thread.currentThread().interrupt();  // Restore interrupt flag
+            return ResponseEntity.status(500).build();
+        }
+    }
+
+    // Get all phone numbers for twillio or other objects
+    @GetMapping("/get-phoneNumbers")
+    public ResponseEntity<List<PhoneNumberObject>> getNumbers(){
+        logger.info("User requested phone numbers at timeStamp: ", new Date().getTime());
+        List<PhoneNumberObject> phoneNumberObjects = new ArrayList<>();
+        try {
+            phoneNumberObjects = adminService.getPhoneNumbers();
+            logger.info("Responded admin with phone numbers: ", phoneNumberObjects.size());
+            return ResponseEntity.ok(phoneNumberObjects);
+        } catch (FirebaseAuthException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            logger.error("Error reciving phone numbers: ", e);
             return ResponseEntity.status(500).build();
         }
     }

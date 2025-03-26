@@ -8,6 +8,8 @@ import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.ListUsersPage;
 import com.google.firebase.auth.UserRecord;
 import com.google.firebase.cloud.FirestoreClient;
+import com.motowncrust.userservice.model.PhoneNumberObject;
+
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,7 +18,7 @@ import java.util.concurrent.ExecutionException;
 
 @Service
 public class AdminService {
-
+    
     public List<UserRecord> getAllUsers() throws FirebaseAuthException {
         List<UserRecord> usersList = new ArrayList<>();
         ListUsersPage page = FirebaseAuth.getInstance().listUsers(null);
@@ -44,4 +46,12 @@ public class AdminService {
         return activityLog;
     }
 
+    public List<PhoneNumberObject> getPhoneNumbers() throws FirebaseAuthException{
+            List<UserRecord> users = getAllUsers();
+            List<PhoneNumberObject> phoneNumberObjects = new ArrayList<>();
+            for(UserRecord userRecord : users){
+                phoneNumberObjects.add(new PhoneNumberObject(userRecord.getUid(),userRecord.getPhoneNumber(), userRecord.getDisplayName()));
+            }
+            return phoneNumberObjects;        
+    }
 }
